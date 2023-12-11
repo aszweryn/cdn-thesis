@@ -3,6 +3,8 @@ services:
   base:
     image: igorbarinov/openresty-nginx-module-vts
     volumes:
+      - "./conf/cache-define.conf:/usr/local/openresty/nginx/conf/cache-define.conf"
+      - "./conf/cache-setup.conf:/usr/local/openresty/nginx/conf/cache-setup.conf"
       - "./conf/vts-location.conf:/usr/local/openresty/nginx/conf/vts-location.conf"
       - "./conf/vts-setup.conf:/usr/local/openresty/nginx/conf/vts-setup.conf"
       - "./conf/lua-path.conf:/usr/local/openresty/nginx/conf/lua-path.conf"
