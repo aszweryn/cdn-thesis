@@ -3,7 +3,7 @@ services:
   base:
     image: igorbarinov/openresty-nginx-module-vts
     volumes:
-      - "./conf/:/usr/local/openresty/nginx/conf/conf/"
+      - "./conf/nginx-related/:/usr/local/openresty/nginx/conf/conf/"
       - "./src/:/lua/src/"
 
   backend:
