@@ -3,7 +3,7 @@ services:
   base:
     image: igorbarinov/openresty-nginx-module-vts
     volumes:
-      - "./conf/nginx-related/:/usr/local/openresty/nginx/conf/conf/"
+      - "./config/nginx-related/:/usr/local/openresty/nginx/conf/conf/"
       - "./src/:/lua/src/"
 
   backend:
@@ -24,4 +24,16 @@ services:
       - backend
     ports:
       - "8081:8080"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus:/etc/prometheus
+      #- ./data/prometheus:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
 
