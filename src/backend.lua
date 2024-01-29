@@ -1,6 +1,8 @@
 local backend = {}
 
 backend.generate_traffic = function()
+  simulations.for_work_longtail(simulations.profile.backend)
+
   ngx.header['Content-Type'] = 'application/json'
   ngx.header['Cache-Control'] = 'public, max-age=' .. (ngx.var.arg_max_age or 15)
 
