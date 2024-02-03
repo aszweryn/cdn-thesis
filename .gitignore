@@ -1,4 +1,5 @@
 /edge/
-/conf/conf/
 /conf/nginx.conf
-/data/
+/data/prometheus/
+/data/grafana/*
+!./data/grafana/alerting/
