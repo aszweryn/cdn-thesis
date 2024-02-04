@@ -23,8 +23,7 @@ simulation.for_work_longtail = function(percentiles)
   local sleep_seconds = random(min_wait_ms, max_wait_ms) * second
   ngx.header["X-Latency"] = "simulated=" .. sleep_seconds .. "s, min=" .. min_wait_ms .. ", max=" .. max_wait_ms .. ", profile=" .. (ngx.var.arg_profile or "empty")
 
-  -- Increased the value by 2 to see the changes in the req/s and errors
-  sleep(sleep_seconds*2)
+  sleep(sleep_seconds)
 end
 
 simulation.profiles = {
