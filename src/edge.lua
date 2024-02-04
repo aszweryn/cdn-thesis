@@ -1,8 +1,8 @@
-local simulations = require(simulations)
+local simulation = require "simulation"
 local edge = {}
 
 edge.simulate_load = function ()
-	simulations.for_work_longtail(simulations.profiles.edge)
+	simulation.for_work_longtail(simulation.profiles.edge)
 end
 
 return edge
