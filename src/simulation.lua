@@ -6,6 +6,7 @@ local second = 0.001
 math.randomseed(ngx.time() + ngx.worker.pid())
 
 simulation.for_work_longtail = function(percentiles)
+
   table.sort(percentiles, function(a,b) return  a.p < b.p end)
 
   local current_percentage = random(1, 100)
