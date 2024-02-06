@@ -10,7 +10,7 @@ simulation.for_work_longtail = function(percentiles)
   table.sort(percentiles, function(a,b) return  a.p < b.p end)
 
   local current_percentage = random(1, 100)
-  local min_wait_ms = 1
+  local min_wait_ms = 10
   local max_wait_ms = 1000
 
   for _, percentile in pairs(percentiles) do
