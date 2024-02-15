@@ -4,14 +4,33 @@ global:
     monitor: 'CDN'
 
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: 'load-balancer'
     metrics_path: '/status/format/prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets:
-        - 'cdn-thesis-loadbalancer:8080'
-        - 'cdn-thesis-edge1:8080'
-        - 'cdn-thesis-edge2:8080'
-        - 'cdn-thesis-edge3:8080'
-        - 'cdn-thesis-backend1:8080'
-        - 'cdn-thesis-backend2:8080'
+      - targets: ['load-balancer:8080']
+  - job_name: 'edge1'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['edge1:8080']
+  - job_name: 'edge2'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['edge2:8080']
+  - job_name: 'edge3'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['edge3:8080']
+  - job_name: 'backend1'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['backend1:8080']
+  - job_name: 'backend2'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['backend2:8080']
