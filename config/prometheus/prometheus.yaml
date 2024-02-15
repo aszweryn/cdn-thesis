@@ -8,4 +8,10 @@ scrape_configs:
     metrics_path: '/status/format/prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['cdn-thesis-edge-1:8080', 'cdn-thesis-backend-1:8080']
+      - targets:
+        - 'cdn-thesis-loadbalancer:8080'
+        - 'cdn-thesis-edge1:8080'
+        - 'cdn-thesis-edge2:8080'
+        - 'cdn-thesis-edge3:8080'
+        - 'cdn-thesis-backend1:8080'
+        - 'cdn-thesis-backend2:8080'
