@@ -1,73 +1,54 @@
 version: '3.9'
-services:
-  base:
-    image: igorbarinov/openresty-nginx-module-vts
-    volumes:
-      - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
-      - './src/:/lua/src/'
+x-backend-base: &backend-base
+  image: igorbarinov/openresty-nginx-module-vts
+  volumes:
+    - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
+    - './nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf'
+    - './src/:/lua/src/'
 
+x-edge-base: &edge-base
+  image: igorbarinov/openresty-nginx-module-vts
+  volumes:
+    - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
+    - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
+    - './src/:/lua/src/'
+
+services:
   backend1:
+    <<: *backend-base
     container_name: backend1
-    extends:
-      service: base
-    volumes:
-      - './nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     ports:
       - '8080:8080'
 
   backend2:
+    <<: *backend-base
     container_name: backend2
-    extends:
-      service: base
-    volumes:
-      - './nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     ports:
       - '8180:8080'
 
   edge1:
+    <<: *edge-base
     container_name: edge1
-    extends:
-      service: base
-    volumes:
-      - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
-      - './edge/:/cache/'
-    depends_on:
-      - backend1
-      - backend2
     ports:
       - '8081:8080'
 
   edge2:
+    <<: *edge-base
     container_name: edge2
-    extends:
-      service: base
-    volumes:
-      - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
-      - './edge/:/cache/'
-    depends_on:
-      - backend1
-      - backend2
     ports:
       - '8082:8080'
 
   edge3:
+    <<: *edge-base
     container_name: edge3
-    extends:
-      service: base
-    volumes:
-      - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
-      - './edge/:/cache/'
-    depends_on:
-      - backend1
-      - backend2
     ports:
       - '8083:8080'
 
   load-balancer:
+    image: igorbarinov/openresty-nginx-module-vts
     container_name: load-balancer
-    extends:
-      service: base
     volumes:
+      - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
       - './nginx-load-balancer.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     depends_on:
       - edge1
@@ -116,4 +97,3 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
       - '9091:3000'
-
