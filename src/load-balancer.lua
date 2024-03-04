@@ -1,4 +1,4 @@
-local rc = require(resty_chash)
+local rc = require "resty.chash"
 local lb = {}
 
 lb.server_list_setup = function()
@@ -23,7 +23,7 @@ lb.set_servers = function ()
 end
 
 lb.resolve_for_upstream = function ()
-  local resolver = require(resty.dns.resolver)
+  local resolver = require(rc.dns.resolver)
   local r, err = resolver:new{
      nameservers = {"127.0.0.11", {"127.0.0.1", 53}},
      retrans = 5,

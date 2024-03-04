@@ -1,13 +1,17 @@
 version: '3.9'
 x-backend-base: &backend-base
-  image: igorbarinov/openresty-nginx-module-vts
+  build:
+    context: .
+    dockerfile: Dockerfile
   volumes:
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
     - './nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     - './src/:/lua/src/'
 
 x-edge-base: &edge-base
-  image: igorbarinov/openresty-nginx-module-vts
+  build:
+    context: .
+    dockerfile: Dockerfile
   volumes:
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
     - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
@@ -45,8 +49,10 @@ services:
       - '8083:8080'
 
   load-balancer:
-    image: igorbarinov/openresty-nginx-module-vts
     container_name: load-balancer
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
       - './nginx-load-balancer.conf:/usr/local/openresty/nginx/conf/nginx.conf'
