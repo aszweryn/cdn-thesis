@@ -5,7 +5,7 @@ local popular_percentage = 96
 local popular_items_count = 5
 local max_items_count = 200
 
-request = function()
+local request = function()
   local is_popular = random(1, 100) <= popular_percentage
   local item = ""
 
@@ -20,3 +20,4 @@ request = function()
 
   return wrk.format(nil, "/" .. item .. ".ext?max_age=" .. max_age )
 end
+
