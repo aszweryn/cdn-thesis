@@ -50,6 +50,7 @@ services:
     volumes:
       - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
       - './nginx-load-balancer.conf:/usr/local/openresty/nginx/conf/nginx.conf'
+      - './src/:/lua/src/'
     depends_on:
       - edge1
       - edge2
@@ -97,3 +98,4 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
       - '9091:3000'
+
