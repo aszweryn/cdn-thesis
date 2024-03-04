@@ -14,7 +14,7 @@ lb.server_list_setup = function()
 end
 
 lb.set_servers = function ()
-  local balancer = require(ngx.balancer)
+  local balancer = require "ngx.balancer"
   local chash_up = package.loaded.my_chash_up
   local servers = package.loaded.my_ip_servers
   local id = chash_up:find(ngx.var.uri)
@@ -23,7 +23,7 @@ lb.set_servers = function ()
 end
 
 lb.resolve_for_upstream = function ()
-  local resolver = require(rc.dns.resolver)
+  local resolver = require "resty.dns.resolver"
   local r, err = resolver:new{
      nameservers = {"127.0.0.11", {"127.0.0.1", 53}},
      retrans = 5,
