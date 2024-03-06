@@ -9,6 +9,16 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['load-balancer:8080']
+  - job_name: 'backend1'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['backend1:8080']
+  - job_name: 'backend2'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['backend2:8080']
   - job_name: 'edge1'
     metrics_path: '/status/format/prometheus'
     scrape_interval: 5s
@@ -24,14 +34,9 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['edge3:8080']
-  - job_name: 'backend1'
+  - job_name: 'edge4'
     metrics_path: '/status/format/prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['backend1:8080']
-  - job_name: 'backend2'
-    metrics_path: '/status/format/prometheus'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['backend2:8080']
+      - targets: ['edge4:8080']
 

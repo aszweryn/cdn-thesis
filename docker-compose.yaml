@@ -48,6 +48,12 @@ services:
     ports:
       - '8083:8080'
 
+  edge4:
+    <<: *edge-base
+    container_name: edge4
+    ports:
+      - '8084:8080'
+
   load-balancer:
     container_name: load-balancer
     build:
@@ -61,6 +67,7 @@ services:
       - edge1
       - edge2
       - edge3
+      - edge4
     ports:
       - "18080:8080"
 
@@ -85,6 +92,7 @@ services:
       - edge1
       - edge2
       - edge3
+      - edge4
       - load-balancer
     ports:
       - '9090:9090'

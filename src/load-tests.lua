@@ -5,7 +5,7 @@ local popular_percentage = 96
 local popular_items_count = 5
 local max_items_count = 200
 
-local request = function()
+request = function()
   local is_popular = random(1, 100) <= popular_percentage
   local item = ""
 

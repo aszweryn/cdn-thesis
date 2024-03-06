@@ -6,6 +6,7 @@ lb.server_list_setup = function()
     ["edge1"] = 1,
     ["edge2"] = 1,
     ["edge3"] = 1,
+    ["edge4"] = 1,
   }
   local chash_up = rc:new(server_list)
 
