@@ -1,5 +1,55 @@
-local rc = require "resty.chash"
+local resty_chash = require "resty.chash"
+local resty_rr = require "resty.roundrobin"
+
 local lb = {}
+local rr_lb = {}
+
+function table_to_string(t)
+  local result = {}
+  for k, v in pairs(t) do
+    if type(v) == "table" then
+      v = table_to_string(v)
+    end
+    result[#result + 1] = k .. ": " .. tostring(v)
+  end
+  return table.concat(result, ", ")
+end
+
+lb.server_list_setup_rr = function()
+  local server_list = {
+    ["edge1"] = 1,
+    ["edge2"] = 1,
+    ["edge3"] = 1,
+    ["edge4"] = 1,
+  }
+
+  local rr_up = resty_rr:new(server_list)
+
+  -- Add logging
+  ngx.log(ngx.ERR, "RR object: ", table_to_string(rr_up))
+
+  package.loaded.my_rr_up = rr_up
+end
+
+lb.set_servers_rr = function()
+  local balancer = require "ngx.balancer"
+  local rr_up = package.loaded.my_rr_up
+  local server = rr_up:find()
+
+    -- Add error checking
+  if not server then
+    ngx.log(ngx.ERR, "Failed to find server")
+    return
+  end
+
+  -- Add logging
+  ngx.log(ngx.ERR, "Server: ", server)
+
+  assert(balancer.set_current_peer(server .. ":8080"))
+
+  -- Add logging
+  ngx.log(ngx.ERR, "set_servers_rr called")
+end
 
 lb.server_list_setup = function()
   local server_list = {
@@ -8,7 +58,7 @@ lb.server_list_setup = function()
     ["edge3"] = 1,
     ["edge4"] = 1,
   }
-  local chash_up = rc:new(server_list)
+  local chash_up = resty_chash:new(server_list)
 
   package.loaded.my_chash_up = chash_up
   package.loaded.my_servers = server_list
