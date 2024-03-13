@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 10s
+  external_labels:
+    monitor: 'Non-CDN'
+
+scrape_configs:
+  - job_name: 'backend1'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['backend1-trad:8080']
+  - job_name: 'backend2'
+    metrics_path: '/status/format/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['backend2-trad:8080']
