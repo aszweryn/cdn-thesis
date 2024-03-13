@@ -112,4 +112,3 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
       - '9091:3000'
-
