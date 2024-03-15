@@ -34,6 +34,9 @@ simulation.profiles = {
   backend={
     {p=50, min=100, max=400,}, {p=90, min=401, max=500,}, {p=95, min=501, max=1500,}, {p=99, min=1501, max=3000,},
   },
+  backend_trad={
+    {p=50, min=(1+100), max=(20+400),}, {p=90, min=(21+401), max=(50+500),}, {p=95, min=(51+501), max=(150+1500),}, {p=99, min=(151+1501), max=(500+3000),},
+  },
 }
 
 return simulation
