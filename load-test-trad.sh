@@ -7,9 +7,9 @@ echo -e "\e[32mLoad testingn the non-CDN version of the application\e[0m"
 
 {
 wrk \
-  --connections 5 \
-  --threads 2 \
-  --duration 1s \
+  --connections 20 \
+  --threads 4 \
+  --duration 2m \
   --script ./src/load-tests.lua \
   --latency \
   http://localhost:8080 \
@@ -18,9 +18,9 @@ wrk \
 
 {
 wrk \
-  --connections 5 \
-  --threads 2 \
-  --duration 1s \
+  --connections 20 \
+  --threads 4 \
+  --duration 2m \
   --script ./src/load-tests.lua \
   --latency \
   http://localhost:8081 \
