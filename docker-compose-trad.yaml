@@ -20,6 +20,21 @@ services:
     container_name: backend2-trad
     ports:
       - '8081:8080'
+  
+  load-balancer-trad:
+    container_name: load-balancer-trad
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
+      - './nginx-load-balancer-trad.conf:/usr/local/openresty/nginx/conf/nginx.conf'
+      - './src/:/lua/src/'
+    depends_on:
+      - backend1-trad
+      - backend2-trad
+    ports:
+      - "18080:8080"
 
   prometheus:
     image: prom/prometheus:latest

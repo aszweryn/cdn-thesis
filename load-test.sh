@@ -7,7 +7,7 @@ echo -e "\e[32mLoad testing the CDN version of the application\e[0m"
 output=$(wrk \
   --connections 10 \
   --threads 2 \
-  --duration 1s \
+  --duration 2m \
   --script ./src/load-tests.lua \
   --latency \
   http://localhost:18080)
