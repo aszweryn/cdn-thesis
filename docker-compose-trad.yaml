@@ -59,7 +59,7 @@ services:
 
   grafana:
     user: root
-    image: grafana/grafana:latest
+    image: grafana/grafana:10.2.2
     container_name: grafana
     restart: unless-stopped
     links:
