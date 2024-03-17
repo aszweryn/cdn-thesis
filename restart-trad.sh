@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Restarting the traditional version of the application\n"
+echo "Restarting the non-CDN version of the application"
 
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
