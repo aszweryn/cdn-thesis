@@ -1,54 +1,67 @@
-local rc = require "resty.chash"
-local lb = {}
+local resty_chash = require "resty.chash"
+local ngx_balancer = require "ngx.balancer"
+local resty_resolver = require "resty.dns.resolver"
 
-lb.server_list_setup = function()
+local load_balancer = {}
+
+-- Setup the server list for the consistent hashing ring
+load_balancer.setup_server_list = function()
   local server_list = {
     ["edge1"] = 1,
     ["edge2"] = 1,
     ["edge3"] = 1,
     ["edge4"] = 1,
   }
-  local chash_up = rc:new(server_list)
+  local consistent_hash_ring = resty_chash:new(server_list)
 
-  package.loaded.my_chash_up = chash_up
-  package.loaded.my_servers = server_list
+  -- Store the consistent hash ring and server list for later use
+  package.loaded.consistent_hash_ring = consistent_hash_ring
+  package.loaded.server_list = server_list
 end
 
-lb.set_servers = function ()
-  local balancer = require "ngx.balancer"
-  local chash_up = package.loaded.my_chash_up
-  local servers = package.loaded.my_ip_servers
-  local id = chash_up:find(ngx.var.uri)
+-- Set the current peer in the load balancer
+load_balancer.set_current_peer = function ()
+  local consistent_hash_ring = package.loaded.consistent_hash_ring
+  local ip_servers = package.loaded.ip_servers
+  local server_id = consistent_hash_ring:find(ngx.var.uri)
 
-  assert(balancer.set_current_peer(servers[id] .. ":8080"))
+  local ok, err = ngx_balancer.set_current_peer(ip_servers[server_id] .. ":8080")
+  if not ok then
+    ngx.log(ngx.ERR, "Failed to set the current peer: ", err)
+    return
+  end
 end
 
-lb.resolve_for_upstream = function ()
-  local resolver = require "resty.dns.resolver"
-  local r, err = resolver:new{
+-- Resolve the IP addresses of the servers
+load_balancer.resolve_ip_addresses = function ()
+  local resolver, err = resty_resolver:new{
      nameservers = {"127.0.0.11", {"127.0.0.1", 53}},
      retrans = 5,
      timeout = 1000,
      no_random = true,
   }
-  if package.loaded.my_ip_servers ~= nil then
+  if not resolver then
+    ngx.log(ngx.ERR, "Failed to create the resolver: ", err)
     return
   end
 
-  local servers = package.loaded.my_servers
+  if package.loaded.ip_servers then
+    return
+  end
+
+  local server_list = package.loaded.server_list
   local ip_servers = {}
 
-  for host, weight in pairs(servers) do
-    local ans, err, tries = r:query(host, nil, {})
-    if ans and #ans > 0 then
-      ip_servers[host] = ans[1].address
-    else
-      print("DNS resolution failed for " .. host)
+  for host, weight in pairs(server_list) do
+    local answers, err, tries = resolver:query(host, nil, {})
+    if not answers then
+      ngx.log(ngx.ERR, "Failed to resolve the host: ", host, " error: ", err)
+    elseif #answers > 0 then
+      ip_servers[host] = answers[1].address
     end
   end
 
-  package.loaded.my_ip_servers = ip_servers
+  package.loaded.ip_servers = ip_servers
 end
 
-return lb
-
+return load_balancer
