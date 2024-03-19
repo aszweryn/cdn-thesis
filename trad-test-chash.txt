@@ -1,0 +1,50 @@
+# Consisten Hashing 
+Load testing the CDN version of the application
+Running 2m test @ http://localhost:18080
+  2 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   457.46ms  291.50ms   2.00s    81.35%
+    Req/Sec    11.79      6.52    40.00     54.66%
+  Latency Distribution
+     50%  430.93ms
+     75%  511.99ms
+     90%  747.76ms
+     99%    1.65s 
+  2430 requests in 2.00m, 799.84KB read
+  Socket errors: connect 0, read 0, write 0, timeout 62
+Requests/sec:     20.25
+Transfer/sec:      6.66KB
+
+# Round Robin
+Load testing the CDN version of the application
+Running 2m test @ http://localhost:18080
+  2 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   448.23ms  277.91ms   1.98s    81.44%
+    Req/Sec    12.10      7.55    40.00     67.26%
+  Latency Distribution
+     50%  433.98ms
+     75%  512.12ms
+     90%  679.15ms
+     99%    1.57s 
+  2393 requests in 2.00m, 787.67KB read
+  Socket errors: connect 0, read 0, write 0, timeout 76
+Requests/sec:     19.94
+Transfer/sec:      6.56KB
+
+# Round Robin w/ 2048 worker_connections
+Load testing the CDN version of the application
+Running 1m test @ http://localhost:18080
+  2 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   433.63ms  271.87ms   1.89s    82.45%
+    Req/Sec    12.52      8.24    40.00     81.91%
+  Latency Distribution
+     50%  428.76ms
+     75%  500.22ms
+     90%  575.67ms
+     99%    1.64s 
+  1168 requests in 1.00m, 384.42KB read
+  Socket errors: connect 0, read 0, write 0, timeout 46
+Requests/sec:     19.44
+Transfer/sec:      6.40KB

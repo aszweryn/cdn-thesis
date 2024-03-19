@@ -7,10 +7,8 @@ local load_balancer = {}
 -- Setup the server list for the consistent hashing ring
 load_balancer.setup_server_list = function()
   local server_list = {
-    ["edge1"] = 1,
-    ["edge2"] = 1,
-    ["edge3"] = 1,
-    ["edge4"] = 1,
+    ["backned1_trad"] = 1,
+    ["backned2_trad"] = 1,
   }
   local consistent_hash_ring = resty_chash:new(server_list)
 

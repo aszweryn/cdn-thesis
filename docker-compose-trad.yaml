@@ -1,73 +1,38 @@
 version: '3.9'
-x-backend-base: &backend-base
+x-base: &base
   build:
     context: .
     dockerfile: Dockerfile
   volumes:
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
-    - './nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     - './src/:/lua/src/'
-
-x-edge-base: &edge-base
-  build:
-    context: .
-    dockerfile: Dockerfile
-  volumes:
-    - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
-    - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
-    - './src/:/lua/src/'
+    - './nginx-backend-trad.conf:/usr/local/openresty/nginx/conf/nginx.conf'
 
 services:
-  backend1:
-    <<: *backend-base
-    container_name: backend1
+  backend1-trad:
+    <<: *base
+    container_name: backend1-trad
     ports:
       - '8080:8080'
 
-  backend2:
-    <<: *backend-base
-    container_name: backend2
-    ports:
-      - '8180:8080'
-
-  edge1:
-    <<: *edge-base
-    container_name: edge1
+  backend2-trad:
+    <<: *base
+    container_name: backend2-trad
     ports:
       - '8081:8080'
-
-  edge2:
-    <<: *edge-base
-    container_name: edge2
-    ports:
-      - '8082:8080'
-
-  edge3:
-    <<: *edge-base
-    container_name: edge3
-    ports:
-      - '8083:8080'
-
-  edge4:
-    <<: *edge-base
-    container_name: edge4
-    ports:
-      - '8084:8080'
-
-  load-balancer:
-    container_name: load-balancer
+  
+  load-balancer-trad:
+    container_name: load-balancer-trad
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
-      - './nginx-load-balancer.conf:/usr/local/openresty/nginx/conf/nginx.conf'
+      - './nginx-load-balancer-trad.conf:/usr/local/openresty/nginx/conf/nginx.conf'
       - './src/:/lua/src/'
     depends_on:
-      - edge1
-      - edge2
-      - edge3
-      - edge4
+      - backend1-trad
+      - backend2-trad
     ports:
       - "18080:8080"
 
@@ -78,7 +43,7 @@ services:
     volumes:
       - ./config/prometheus:/etc/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--config.file=/etc/prometheus/prometheus-trad.yaml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
@@ -87,13 +52,8 @@ services:
     labels:
       org.label-schema.group: 'monitoring'
     depends_on:
-      - backend1
-      - backend2
-      - edge1
-      - edge2
-      - edge3
-      - edge4
-      - load-balancer
+      - backend1-trad
+      - backend2-trad
     ports:
       - '9090:9090'
 
@@ -102,6 +62,8 @@ services:
     image: grafana/grafana:10.2.2
     container_name: grafana
     restart: unless-stopped
+    links:
+      - prometheus
     volumes:
       - ./data/grafana:/var/lib/grafana
     environment:
