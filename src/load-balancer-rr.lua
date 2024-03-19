@@ -7,28 +7,25 @@ local load_balancer = {}
 -- Setup the server list for the consistent hashing ring
 load_balancer.setup_server_list = function()
   local server_list = {
-    ["edge1:8080"] = 1,
-    ["edge2:8080"] = 1,
-    ["edge3:8080"] = 1,
-    ["edge4:8080"] = 1,
+    ["172.22.0.6:8080"] = 1,
+   -- ["edge2:8080"] = 1,
+   -- ["edge3:8080"] = 1,
+   -- ["edge4:8080"] = 1,
   }
   local rr_up = resty_roundrobin:new(server_list)
 
   package.loaded.my_rr_up = rr_up
-  package.loaded.server_list = server_list
 end
 
 -- Set the current peer in the load balancer
 load_balancer.set_current_peer = function ()
-    local rr_up = package.loaded.my_rr_up    
-    local ip_servers = package.loaded.ip_servers
-    local server_id = rr_up:find()
+    local b = require "ngx.balancer"
 
-    local ok, err = ngx_balancer:set_current_peer(ip_servers[server_id] .. ":8080")
-    if not ok then
-        ngx.log(ngx.ERR, "Failed to set the current peer: ", err)
-        return
-    end
+    local rr_up = package.loaded.my_rr_up    
+
+    local server = rr_up:find()
+
+    assert(b.set_current_peer(server))
 end
 
 -- Resolve the IP addresses of the servers
