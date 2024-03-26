@@ -7,8 +7,6 @@ x-backend-base: &backend-base
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
     - './nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     - './src/:/lua/src/'
-  cpus: '0.01'
-  mem_limit: 15m
 
 x-edge-base: &edge-base
   build:
@@ -74,8 +72,6 @@ services:
       - edge4
     ports:
       - "18080:8080"
-    cpus: '0.01'
-    mem_limit: 15m
 
   prometheus:
     image: prom/prometheus:latest
