@@ -1,4 +1,3 @@
-version: '3.9'
 x-backend-base: &backend-base
   build:
     context: .
@@ -16,8 +15,8 @@ x-edge-base: &edge-base
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
     - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     - './src/:/lua/src/'
-  cpus: '0.01'
-  mem_limit: 15m
+  #cpus: '0.01'
+  #mem_limit: 15m
 
 services:
   backend1:

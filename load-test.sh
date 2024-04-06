@@ -13,3 +13,7 @@ output=$(wrk \
   http://localhost:18080)
 
 echo -e "\e[96m${output}\e[0m"
+
+# Save the output to a file
+filename="$(date +%m-%d-%H:%M).txt"
+echo "${output}" > "$PWD/docs/load-tests/${filename}"
