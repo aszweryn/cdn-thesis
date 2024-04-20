@@ -2,3 +2,4 @@
 /data/prometheus/*
 /conf/nginx.conf
 /edge/
+/docs/load-tests/*

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Restarting the CDN version of the application\n"
+echo "Restarting the CDN version of the application w/ Round Robin"
 
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
