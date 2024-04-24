@@ -6,6 +6,8 @@ x-base: &base
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
     - './src/:/lua/src/'
     - './nginx-backend-trad.conf:/usr/local/openresty/nginx/conf/nginx.conf'
+  # cpus: 0.01
+  #mem_limit: 6m
 
 services:
   backend1-trad:
@@ -70,4 +72,4 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
-      - '9091:3000'
+      - '3000:3000'

@@ -6,6 +6,8 @@ x-backend-base: &backend-base
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
     - './nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     - './src/:/lua/src/'
+  # cpus: 0.01
+  # mem_limit: 6m
 
 x-edge-base: &edge-base
   build:
@@ -15,6 +17,8 @@ x-edge-base: &edge-base
     - './config/nginx-related/:/usr/local/openresty/nginx/conf/conf/'
     - './nginx-edge.conf:/usr/local/openresty/nginx/conf/nginx.conf'
     - './src/:/lua/src/'
+  # cpus: 0.01
+  # mem_limit: 6m
 
 services:
   backend1:
@@ -108,5 +112,5 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
-      - '9091:3000'
+      - '3000:3000'
 
